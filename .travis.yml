@@ -1,0 +1,50 @@
+---
+dist: xenial
+language: python
+python: "2.7"
+
+sudo: true
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
+
+install:
+  # Install ansible
+  - pip install ansible jmespath
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
+
+script:
+  # Basic role syntax check
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+  # Execution of the playbook
+  - ansible-playbook tests/test.yml -i tests/inventory
+
+  # Test role idempotency
+  - |
+    ansible-playbook tests/test.yml -i tests/inventory \
+    | grep -q 'changed=0.*failed=0' \
+    && (echo 'Idempotence test: pass' && exit 0) \
+    || (echo 'Idempotence test: fail' && exit 1)
+
+  # Check that we deployed a Centos 7 container named container1
+  - |
+    sudo lxc exec container1 -- cat /etc/redhat-release | grep 'CentOS Linux release 7' \
+    && (echo 'Container creation test: pass' && exit 0) \
+    || (echo 'Container creation test: fail' && exit 1)
+
+  - sudo lxc exec container1 -- hostname -I
+
+  # Check that DHCP correctly assign the desired ip to container1
+  - |
+    sudo lxc exec container1 -- hostname -I | tr -d ' ' | grep -e '^1.1.1.11$' \
+    && (echo 'Container dhcp ip test: pass' && exit 0) \
+    || (echo 'Container dhcp ip test: failed' && exit 1)

@@ -1,0 +1,5 @@
+{{ ansible_managed | comment }}
+
+{% for container in lxd_deploy_containers %}
+dhcp-host={{ container['name'] }},{{ container['ip'] }}
+{% endfor %}

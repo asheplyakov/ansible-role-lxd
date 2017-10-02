@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    lxd_deploy_dhcp:
+      address: 1.1.1.1
+      netmask: 255.255.255.0
+      network: 1.1.1.0/24
+      range: 1.1.1.2,1.1.1.254
+      max: 253
+    lxc_deploy_containers:
+      - name: container1
+        ip: 1.1.1.11
+        alias: centos/7/amd64
+        extra_conf:
+          - lxc.mount.entry = /dev/net dev/net none bind,create=dir
+          - lxc.cgroup.devices.allow = c 10:200 rwm
+  roles:
+    - ansible-role-lxd-deploy

@@ -1,0 +1,48 @@
+---
+- name: Installation des packages lxd
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - lxd
+    - yum
+
+- name: Installation des requirements
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - jmespath
+
+- name: Configuration réseau de lxc
+  template:
+    src: lxd-bridge.j2
+    dest: /etc/default/lxd-bridge
+  notify:
+    - restart lxd-bridge
+
+- name: Copie du fichier dnsmasq
+  template:
+    src: dns.conf.j2
+    dest: /etc/default/dns.conf
+  notify:
+    - restart lxd-bridge
+
+- name: Force du run des handlers
+  meta: flush_handlers
+
+- name: Création des containers
+  lxd_container:
+    name: "{{ item.name }}"
+    state: started
+    source:
+      type: image
+      mode: pull
+      server: https://images.linuxcontainers.org
+      protocol: lxd
+      alias: "{{ item.alias }}"
+    profiles: ["default"]
+    wait_for_ipv4_addresses: true
+  with_items: "{{ lxd_deploy_containers }}"
+  register: add_lxd_container
+
