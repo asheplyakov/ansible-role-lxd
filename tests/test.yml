@@ -8,7 +8,7 @@
       network: 1.1.1.0/24
       range: 1.1.1.2,1.1.1.254
       max: 253
-    lxc_deploy_containers:
+    lxd_deploy_containers:
       - name: container1
         ip: 1.1.1.11
         alias: centos/7/amd64
