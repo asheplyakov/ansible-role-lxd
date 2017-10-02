@@ -1,10 +1,16 @@
 ---
+- name: Inclusion des variables OS specific
+  include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+
 - name: Installation des packages lxd
   apt:
     name: "{{ item }}"
     state: latest
+    default_release: "{{ lxd_deploy_apt_default_release }}"
+    update_cache: yes
   with_items:
     - lxd
+    - lxd-client
     - yum
 
 - name: Installation des requirements
