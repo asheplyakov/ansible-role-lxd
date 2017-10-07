@@ -19,7 +19,9 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - printf '[defaults]\nroles_path=../\nlibrary=../' >ansible.cfg
+
+  - wget https://raw.githubusercontent.com/Nani-o/ansible-module-lxd_network/master/lxd_network.py
 
 script:
   # Basic role syntax check

@@ -20,23 +20,13 @@
   with_items:
     - jmespath
 
-- name: Configuration réseau de lxc
-  template:
-    src: lxd-bridge.j2
-    dest: /etc/default/lxd-bridge
-  notify:
-    - restart lxd-bridge
-
-- name: Copie du fichier dnsmasq
-  template:
-    src: dns.conf.j2
-    dest: /etc/default/dns.conf
-  notify:
-    - restart lxd-bridge
-
-- name: Force du run des handlers
-  meta: flush_handlers
-
+- name: Configuration des networks
+  lxd_network:
+    name: "{{ item.name }}"
+    config: "{{ item.config }}"
+    description: "{{ item.description }}"
+  with_items: "{{ lxd_deploy_networks }}"
+    
 - name: Création des containers
   lxd_container:
     name: "{{ item.name }}"

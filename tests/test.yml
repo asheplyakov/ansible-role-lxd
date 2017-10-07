@@ -2,12 +2,13 @@
 - hosts: localhost
   become: true
   vars:
-    lxd_deploy_dhcp:
-      address: 1.1.1.1
-      netmask: 255.255.255.0
-      network: 1.1.1.0/24
-      range: 1.1.1.2,1.1.1.254
-      max: 253
+    lxd_deploy_networks:
+      - name: lxdbr0
+        description: Default bridge
+        config:
+          ipv4.address: 1.1.1.1/24
+          ipv4.nat: "true"
+          ipv6.address: none
     lxd_deploy_containers:
       - name: container1
         ip: 1.1.1.11
