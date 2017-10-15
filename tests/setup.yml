@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  vars:
+    file_downloads:
+      - src: https://raw.githubusercontent.com/Nani-o/ansible/lxd_network/lib/ansible/modules/cloud/lxd/lxd_network.py
+        name: lxd_network.py
+        path: "/etc/ansible/modules/"
+  tasks:
+    - name: Create folders
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items: "{{ (git_repos | default([]) + file_downloads | default([])) | map(attribute='path') | list }}"
+
+    - name: Clone/Pull of repositories
+      git:
+        repo: "{{ item.src }}"
+        dest: "{{ item.path }}/{{ item.name }}"
+        clone: yes
+        update: yes
+      when: git_repos is defined
+      with_items: "{{ git_repos }}"
+
+    - name: Download files
+      get_url:
+        url: "{{ item.src }}"
+        dest: "{{ item.path }}/{{ item.name }}"
+      when: file_downloads is defined
+      with_items: "{{ file_downloads }}"
+
