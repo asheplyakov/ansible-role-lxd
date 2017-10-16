@@ -1,6 +1,0 @@
----
-# handlers file for lxc-deploy
-- name: restart lxd-bridge
-  service:
-    name: lxd-bridge
-    state: restarted

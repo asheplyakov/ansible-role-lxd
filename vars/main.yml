@@ -1,2 +1,7 @@
 ---
 # vars file for lxc-deploy
+lxd_deploy_apt_packages:
+  - lxd
+  - lxd-client
+  - yum
+

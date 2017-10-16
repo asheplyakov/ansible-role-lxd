@@ -2,31 +2,41 @@
 - name: Inclusion des variables OS specific
   include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
 
+- name: Installation des repositories
+  apt_repository:
+    repo: "{{ lxd_deploy_apt_repository }}"
+  when: lxd_deploy_apt_repository is defined
+
 - name: Installation des packages lxd
   apt:
     name: "{{ item }}"
     state: latest
     default_release: "{{ lxd_deploy_apt_default_release }}"
     update_cache: yes
-  with_items:
-    - lxd
-    - lxd-client
-    - yum
+  with_items: "{{ lxd_deploy_apt_packages }}"
 
-- name: Installation des requirements
-  pip:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - jmespath
+- name: Création du storage default
+  shell: "lxc storage create default dir source=/var/lib/lxd/storage-pools/default"
+  changed_when: false
+  ignore_errors: true
 
-- name: Configuration des networks
+- name: Création des networks
   lxd_network:
     name: "{{ item.name }}"
+    state: "present"
     config: "{{ item.config }}"
     description: "{{ item.description }}"
   with_items: "{{ lxd_deploy_networks }}"
-    
+
+- name: Création des profiles
+  lxd_profile:
+    name: "{{ item.name }}"
+    state: "present"
+    config: "{{ item.config }}"
+    devices: "{{ item.devices }}"
+    description: "{{ item.description }}"
+  with_items: "{{ lxd_deploy_profiles }}"
+
 - name: Création des containers
   lxd_container:
     name: "{{ item.name }}"
@@ -37,8 +47,7 @@
       server: https://images.linuxcontainers.org
       protocol: lxd
       alias: "{{ item.alias }}"
-    profiles: ["default"]
+    profiles: "{{ item.profiles }}"
     wait_for_ipv4_addresses: true
   with_items: "{{ lxd_deploy_containers }}"
   register: add_lxd_container
-
