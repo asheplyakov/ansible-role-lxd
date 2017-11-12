@@ -28,7 +28,6 @@
 
     lxd_deploy_containers:
       - name: "c1"
-        ip: "1.1.1.111"
         alias: "centos/7/amd64"
         profiles:
           - "default"

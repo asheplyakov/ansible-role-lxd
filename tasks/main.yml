@@ -48,7 +48,8 @@
       server: https://images.linuxcontainers.org
       protocol: lxd
       alias: "{{ item.alias }}"
-    profiles: "{{ item.profiles }}"
+    profiles: "{{ item.profiles | default({}) }}"
+    devices: "{{ item.devices | default({}) }}"
     wait_for_ipv4_addresses: true
   with_items: "{{ lxd_deploy_containers }}"
   register: add_lxd_container
