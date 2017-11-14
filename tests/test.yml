@@ -31,5 +31,13 @@
         alias: "centos/7/amd64"
         profiles:
           - "default"
+      - name: "c2"
+        alias: "ubuntu/xenial/amd64"
+        profiles:
+          - "default"
+      - name: "c3"
+        alias: "debian/stretch/amd64"
+        profiles:
+          - "default"
   roles:
     - role_to_test
