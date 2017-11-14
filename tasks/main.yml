@@ -53,3 +53,46 @@
     wait_for_ipv4_addresses: true
   with_items: "{{ lxd_deploy_containers }}"
   register: add_lxd_container
+
+- name: Ajout des containers créés à l'inventaire dynamique
+  add_host:
+    name: "{{ item.item.name }}"
+    ansible_connection: lxd
+  with_items: "{{ add_lxd_container.results }}"
+  when: "'create' in item.actions"
+  changed_when: None
+  loop_control:
+    label: "{{ item.item.name }}"
+
+- name: Installation de python sur les containers CentOS
+  raw: yum -y install python
+  delegate_to: "{{ item.item.name }}"
+  with_items: "{{ add_lxd_container.results }}"
+  when:
+    - "'create' in item.actions"
+    - "'centos' in item.item.alias"
+  become: false
+  loop_control:
+    label: "{{ item.item.name }}"
+
+- name: Installation de python sur les containers Debian
+  raw: apt-get update && apt-get -y install python
+  delegate_to: "{{ item.item.name }}"
+  with_items: "{{ add_lxd_container.results }}"
+  when:
+    - "'create' in item.actions"
+    - "'ubuntu' in item.item.alias or 'debian' in item.item.alias"
+  become: false
+  loop_control:
+    label: "{{ item.item.name }}"
+
+- name: Installation de gpg pour Debian 9 et le module apt_key
+  raw: apt-get -y install gpg
+  delegate_to: "{{ item.item.name }}"
+  with_items: "{{ add_lxd_container.results }}"
+  when:
+    - "'create' in item.actions"
+    - "'stretch' in item.item.alias"
+  become: false
+  loop_control:
+    label: "{{ item.item.name }}"
