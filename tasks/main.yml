@@ -74,7 +74,7 @@
   become: false
 
 - name: Installation de python sur les containers Debian
-  raw: apt-get update && apt-get -y install python
+  raw: apt-get update && apt-get -y install python ca-certificates
   delegate_to: "{{ item.item.name }}"
   with_items: "{{ add_lxd_container.results }}"
   when:
