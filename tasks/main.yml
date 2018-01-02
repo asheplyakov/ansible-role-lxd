@@ -46,7 +46,7 @@
       type: image
       mode: pull
       server: https://images.linuxcontainers.org
-      protocol: lxd
+      protocol: simplestreams
       alias: "{{ item.alias }}"
     profiles: "{{ item.profiles | default({}) }}"
     devices: "{{ item.devices | default({}) }}"
