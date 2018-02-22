@@ -1,3 +1,0 @@
----
-lxd_deploy_apt_default_release: "trusty"
-lxd_deploy_apt_repository: "ppa:ubuntu-lxc/lxd-stable"
