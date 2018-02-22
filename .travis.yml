@@ -11,6 +11,9 @@ env:
   - distribution: ubuntu
     distribution_version: 14
 
+before_install:
+  - sudo apt-get -qq update
+
 install:
   # Create a random file to store the container ID.
   - container_id=$(mktemp)
@@ -22,57 +25,3 @@ install:
 script:
   # Run tests.
   - ${PWD}/tests/test.sh
-
-#   # Create ansible.cfg
-#   -
-
-#   # Create ansible.cfg with correct roles_path
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     printf '[defaults]\nroles_path=/etc/ansible/roles/\nlibrary=/etc/ansible/modules/' > /etc/ansible/ansible.cfg
-
-#   # Check ansible version
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     ansible --version
-
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     mkdir /etc/ansible/modules
-
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     wget https://raw.githubusercontent.com/Nani-o/ansible-module-lxd_network/master/lxd_network.py -O /etc/ansible/lxd_network.py
-
-# script:
-#   # Basic role syntax check
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     ansible-playbook ${role_path}/tests/test.yml -i ${role_path}/tests/inventory --syntax-check
-
-#   # Execution of the playbook
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     ansible-playbook ${role_path}/tests/test.yml -i ${role_path}/tests/inventory
-
-#   # Test role idempotency
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     ansible-playbook ${role_path}/tests/test.yml -i ${role_path}/tests/inventory
-#     | grep -q 'changed=0.*failed=0'
-#     && (echo 'Idempotence test: pass' && exit 0)
-#     || (echo 'Idempotence test: fail' && exit 1)
-
-#   # Check that we deployed a Centos 7 container named container1
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     sudo lxc exec container1 -- cat /etc/redhat-release | grep 'CentOS Linux release 7'
-#     && (echo 'Container creation test: pass' && exit 0)
-#     || (echo 'Container creation test: fail' && exit 1)
-
-#   # Check that DHCP correctly assign the desired ip to container1
-#   - >
-#     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-#     sudo lxc exec container1 -- hostname -I | tr -d ' ' | grep -e '^1.1.1.11$'
-#     && (echo 'Container dhcp ip test: pass' && exit 0)
-#     || (echo 'Container dhcp ip test: failed' && exit 1)
