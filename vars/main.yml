@@ -1,6 +1,5 @@
 ---
-# vars file for lxc-deploy
-lxd_dependencies_packages:
-  - snapd
-  - yum
-
+# vars file for lxd
+lxd_apt_packages:
+  - lxd
+  - lxd-client
