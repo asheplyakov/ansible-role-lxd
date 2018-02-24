@@ -8,7 +8,7 @@
   when: "lxd_use_lts is defined and lxd_use_lts"
 
 - name: Installation des packages lxd
- apt:
+  apt:
     name: "{{ item }}"
     state: latest
     default_release: "{{ lxd_apt_release }}"
