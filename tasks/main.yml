@@ -31,6 +31,13 @@
   with_items: "{{ lxd_networks }}"
   when: "not lxd_use_lts"
 
+- name: [LTS] - Copie de la configuration réseau
+  templatea:
+    src: lxd-bridge.j2
+    dest: /etc/default/lxd-bridge
+  notify: restart lxd
+  when: "lxd_use_lts"
+
 - name: Création des profiles
   lxd_profile:
     name: "{{ item.name }}"

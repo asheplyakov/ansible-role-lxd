@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+USE_LXD_BRIDGE="true"
+LXD_BRIDGE="lxdbr0"
+UPDATE_PROFILE="true"
+LXD_CONFILE=""
+LXD_DOMAIN="lxd"
+{% if lxd_bridge.ipv4 is defined %}
+LXD_IPV4_ADDR="{{ lxd_bridge.ipv4.address | ipaddr('address') }}"
+LXD_IPV4_NETMASK="{{ lxd_bridge.ipv4.address | ipaddr('netmask') }}"
+LXD_IPV4_NETWORK="{{ lxd_bridge.ipv4.address }}"
+LXD_IPV4_DHCP_RANGE="{{ lxd_bridge.ipv4.address | ipaddr('address') | ipaddr('2') }},{{ lxd_bridge.ipv4.address | ipaddr('address') | ipaddr('-2') }}"
+LXD_IPV4_DHCP_MAX"{{ lxd_bridge.ipv4.address | ipaddr('net') | ipaddr('size') - 4 }}"
+LXD_IPV4_NAT="{{ lxd_bridge.ipv4.nat | default('false') }}"
+{% endif %}
+{% if lxd_bridge.ipv6 is defined %}
+LXD_IPV6_ADDR="{{ lxd_bridge.ipv6.address | ipaddr('address') }}"
+LXD_IPV6_MASK="{{ lxd_bridge.ipv6.address | ipaddr('prefix') }}"
+LXD_IPV6_NETWORK="{{ lxd_bridge.ipv6.address }}"
+LXD_IPV6_NAT="{{ lxd_bridge.ipv6.nat | default('false') }}"
+LXD_IPV6_PROXY="false"
+{% endif %}
