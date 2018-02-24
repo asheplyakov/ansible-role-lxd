@@ -36,7 +36,7 @@
         profiles:
           - "default"
       - name: "c3"
-        alias: "debian/stretch/amd64"
+        alias: "debian/9/amd64"
         profiles:
           - "default"
   roles:

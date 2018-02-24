@@ -1,2 +1,3 @@
 ---
 # defaults file for lxc-deploy
+lxd_use_lts: false
