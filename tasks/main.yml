@@ -31,7 +31,7 @@
   with_items: "{{ lxd_networks }}"
   when: "not lxd_use_lts"
 
-- name: [LTS] - Copie de la configuration réseau
+- name: Copie de la configuration réseau LTS
   templatea:
     src: lxd-bridge.j2
     dest: /etc/default/lxd-bridge
