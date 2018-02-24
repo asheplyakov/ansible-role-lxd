@@ -37,6 +37,9 @@
     dest: /etc/default/lxd-bridge
   notify: restart lxd
   when: "lxd_use_lts"
+  
+- name: Flush des handlers
+  meta: flush_handlers
 
 - name: Création des profiles
   lxd_profile:
