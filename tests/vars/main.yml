@@ -1,0 +1,14 @@
+---
+lxd_containers:
+    - name: "c1"
+      alias: "centos/7/amd64"
+      profiles:
+        - "default"
+    - name: "c2"
+      alias: "ubuntu/xenial/amd64"
+      profiles:
+        - "default"
+    - name: "c3"
+      alias: "debian/9/amd64"
+      profiles:
+        - "default"
