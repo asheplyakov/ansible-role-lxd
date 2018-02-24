@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  tasks:
+  pre_tasks:
     - name: Include vars
       include_vars:
         dir: "vars"
