@@ -28,7 +28,7 @@
     state: "present"
     config: "{{ item.config }}"
     description: "{{ item.description }}"
-  with_items: "{{ lxd_deploy_networks }}"
+  with_items: "{{ lxd_networks }}"
   when: "not lxd_use_lts"
 
 - name: Création des profiles
@@ -38,7 +38,7 @@
     config: "{{ item.config }}"
     devices: "{{ item.devices }}"
     description: "{{ item.description }}"
-  with_items: "{{ lxd_deploy_profiles }}"
+  with_items: "{{ lxd_profiles }}"
 
 - name: Création des containers
   lxd_container:
@@ -53,7 +53,7 @@
     profiles: "{{ item.profiles | default({}) }}"
     devices: "{{ item.devices | default({}) }}"
     wait_for_ipv4_addresses: true
-  with_items: "{{ lxd_deploy_containers }}"
+  with_items: "{{ lxd_containers }}"
   register: add_lxd_container
 
 - name: Ajout des containers créés à l'inventaire dynamique
