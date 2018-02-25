@@ -20,7 +20,7 @@
   register: default_storage_add
   changed_when: "default_storage_add.rc == 0"
   failed_when: "default_storage_add.rc != 0 and 'already exists' not in default_storage_add.stderr"
-  when: "not lxd_use_lts"
+  # when: "not lxd_use_lts"
 
 - name: Création des networks
   lxd_network:

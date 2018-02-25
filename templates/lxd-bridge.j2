@@ -9,7 +9,7 @@ LXD_IPV4_ADDR="{{ lxd_bridge.ipv4.address | ipaddr('address') }}"
 LXD_IPV4_NETMASK="{{ lxd_bridge.ipv4.address | ipaddr('netmask') }}"
 LXD_IPV4_NETWORK="{{ lxd_bridge.ipv4.address }}"
 LXD_IPV4_DHCP_RANGE="{{ lxd_bridge.ipv4.address | ipaddr('2') | ipaddr('address') }},{{ lxd_bridge.ipv4.address | ipaddr('-2') | ipaddr('address') }}"
-LXD_IPV4_DHCP_MAX"{{ lxd_bridge.ipv4.address | ipaddr('size') - 4 }}"
+# LXD_IPV4_DHCP_MAX"{{ lxd_bridge.ipv4.address | ipaddr('size') - 4 }}"
 LXD_IPV4_NAT="{{ lxd_bridge.ipv4.nat | default('false') }}"
 {% endif %}
 {% if lxd_bridge.ipv6 is defined %}
