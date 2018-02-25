@@ -8,5 +8,9 @@
       with_items:
         - "main.yml"
         - "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+    - name: Install netaddr python module
+      apt:
+        name: python-netaddr
+        state: latest
   roles:
     - role_to_test

@@ -3,8 +3,3 @@
 lxd_apt_packages:
   - lxd
   - lxd-client
-
-lxd_lts_apt_packages:
-  - lxd
-  - lxd-client
-  - python-netaddr
