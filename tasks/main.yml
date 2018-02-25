@@ -37,6 +37,10 @@
     dest: /etc/default/lxd-bridge
   notify: restart lxd
   when: "lxd_use_lts"
+
+- name: debug
+  command: "cat /etc/default/lxd-bridge"
+  when: "lxd_use_lts"
   
 - name: Flush des handlers
   meta: flush_handlers
