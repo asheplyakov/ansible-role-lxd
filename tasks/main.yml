@@ -40,7 +40,12 @@
 
 - name: debug
   command: "cat /etc/default/lxd-bridge"
+  register: test
   when: "lxd_use_lts"
+  
+- name: debug
+  debug:
+    var: test
   
 - name: Flush des handlers
   meta: flush_handlers
