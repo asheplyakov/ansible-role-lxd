@@ -5,7 +5,7 @@
 - name: Ajout des variables pour une install LTS
   set_fact:
     lxd_apt_release: "{{ lxd_lts_apt_release }}"
-    lxd_apt_packages: "{{ lxd_ltsxapt_packages }}"
+    lxd_apt_packages: "{{ lxd_lts_apt_packages }}"
   when: "lxd_use_lts"
 
 - name: Installation des packages lxd
