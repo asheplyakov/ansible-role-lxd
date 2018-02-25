@@ -20,7 +20,7 @@
   register: default_storage_add
   changed_when: "default_storage_add.rc == 0"
   failed_when: "default_storage_add.rc != 0 and 'already exists' not in default_storage_add.stderr"
-  # when: "not lxd_use_lts"
+  when: "not lxd_use_lts"
 
 - name: Création des networks
   lxd_network:
@@ -30,6 +30,10 @@
     description: "{{ item.description }}"
   with_items: "{{ lxd_networks }}"
   when: "not lxd_use_lts"
+
+- name: Copie de la configuration réseau LTS
+  command: "lxd init --auto"
+  when: "lxd_use_lts"
 
 - name: Copie de la configuration réseau LTS
   template:
