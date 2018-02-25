@@ -32,7 +32,7 @@
   when: "not lxd_use_lts"
 
 - name: Copie de la configuration réseau LTS
-  templatea:
+  template:
     src: lxd-bridge.j2
     dest: /etc/default/lxd-bridge
   notify: restart lxd
