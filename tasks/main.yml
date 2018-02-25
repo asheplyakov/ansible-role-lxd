@@ -2,9 +2,10 @@
 - name: Inclusion des variables OS specific
   include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
 
-- name: Selecting release to install from
+- name: Ajout des variables pour une install LTS
   set_fact:
     lxd_apt_release: "{{ lxd_lts_apt_release }}"
+    lxd_apt_packages: "{{ lxd_ltsxapt_packages }}"
   when: "lxd_use_lts"
 
 - name: Installation des packages lxd
