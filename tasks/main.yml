@@ -29,7 +29,9 @@
     config: "{{ item.config }}"
     description: "{{ item.description }}"
   with_items: "{{ lxd_networks }}"
-  when: "not lxd_use_lts"
+  when:
+    - "not lxd_use_lts"
+    - "lxd_networks is defined"
 
 - name: Copie de la configuration réseau LTS
   command: "lxd init --auto"
@@ -62,6 +64,7 @@
     devices: "{{ item.devices }}"
     description: "{{ item.description }}"
   with_items: "{{ lxd_profiles }}"
+  when: "lxd_profiles is defined"
 
 - name: Création des containers
   lxd_container:
@@ -77,6 +80,7 @@
     devices: "{{ item.devices | default({}) }}"
     wait_for_ipv4_addresses: true
   with_items: "{{ lxd_containers }}"
+  when: "lxd_containers is defined"
   register: add_lxd_container
 
 - name: Ajout des containers créés à l'inventaire dynamique
