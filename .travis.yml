@@ -25,3 +25,11 @@ install:
 script:
   # Run tests.
   - ${PWD}/tests/test.sh
+
+after_failure:
+  - echo '# ip machine'
+  - /sbin/ip a
+  - echo '# ip c1'
+  - sudo -E su travis -c "lxc exec c1 /sbin/ip a"
+  - echo '# list container containers'
+  - sudo -E su travis -c "lxc list"
