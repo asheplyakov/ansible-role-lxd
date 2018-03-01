@@ -40,7 +40,7 @@
   register: lxd_init_result
   failed_when:
     - "lxd_init_result.rc != 0"
-    - "'lxd init requires an empty LXD.' not in lxd_init_result.stdout"
+    - "'lxd init requires an empty LXD.' not in lxd_init_result.stderr"
   when: "lxd_use_lts"
 
 - name: Copie de la configuration réseau LTS
