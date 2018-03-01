@@ -11,9 +11,9 @@ lxd_profiles:
         nictype: "bridged"
         parent: "lxdbr0"
         type: "nic"
-#       root:
-#         path: "/"
-#         type: "disk"
+       root:
+         path: "/"
+         type: "disk"
 
 lxd_bridge:
   ipv4:
