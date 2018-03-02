@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Nani-o/ansible-role-lxd-deploy.svg?branch=master)](https://travis-ci.org/Nani-o/ansible-role-lxd-deploy)
+[![Build Status](https://travis-ci.org/Nani-o/ansible-role-lxd.svg?branch=master)](https://travis-ci.org/Nani-o/ansible-role-lxd-deploy)
 
 lxd-deploy
 ==========
