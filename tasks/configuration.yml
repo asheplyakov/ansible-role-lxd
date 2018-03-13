@@ -1,0 +1,49 @@
+---
+- name: Création du storage default
+  shell: "lxc storage create default dir source=/var/lib/lxd/storage-pools/default"
+  register: default_storage_add
+  changed_when: "default_storage_add.rc == 0"
+  failed_when:
+    - "default_storage_add.rc != 0"
+    - "'already exists' not in default_storage_add.stderr"
+  when: "not lxd_use_lts"
+
+- name: Création des networks
+  lxd_network:
+    name: "{{ item.name }}"
+    state: "present"
+    config: "{{ item.config }}"
+    description: "{{ item.description }}"
+  with_items: "{{ lxd_networks }}"
+  when:
+    - "not lxd_use_lts"
+    - "lxd_networks is defined"
+
+- name: Execution de lxd init pour la LTS
+  command: "lxd init --auto"
+  register: lxd_init_result
+  changed_when: "lxd_init_result.rc == 0"
+  failed_when:
+    - "lxd_init_result.rc != 0"
+    - "'lxd init requires an empty LXD.' not in lxd_init_result.stderr"
+  when: "lxd_use_lts"
+
+- name: Copie de la configuration réseau pour la LTS
+  template:
+    src: lxd-bridge.j2
+    dest: /etc/default/lxd-bridge
+  notify: restart lxd
+  when: "lxd_use_lts"
+
+- name: Flush des handlers
+  meta: flush_handlers
+
+- name: Création des profiles
+  lxd_profile:
+    name: "{{ item.name }}"
+    state: "present"
+    config: "{{ item.config }}"
+    devices: "{{ item.devices }}"
+    description: "{{ item.description }}"
+  with_items: "{{ lxd_profiles }}"
+  when: "lxd_profiles is defined"

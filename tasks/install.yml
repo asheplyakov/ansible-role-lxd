@@ -1,0 +1,8 @@
+---
+- name: Installation des packages lxd
+  apt:
+    name: "{{ item }}"
+    state: latest
+    default_release: "{{ lxd_apt_release }}"
+    update_cache: yes
+  with_items: "{{ lxd_apt_packages }}"
