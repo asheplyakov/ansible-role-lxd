@@ -29,6 +29,8 @@
 - name: Installation de python sur les containers
   raw: |
     test -e /etc/redhat-release && manager='yum'
-    test -e /etc/debian_version && manager='apt-get' && extra='ca-certificates gpg'
-    $manager -y install python $extra
+    test -e /etc/debian_version && manager='apt-get' && extra='ca-certificates'
+    test -e /usr/bin/python && $manager -y install python $extra
+  with_items: "{{ lxd_containers }}"
+  delegate_to: "{{ item.name }}" 
   changed_when: false
