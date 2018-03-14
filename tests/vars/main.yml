@@ -17,7 +17,7 @@ lxd_containers:
       profiles:
         - "default"
     - name: "u17"
-      alias: "ubuntu/17.04/amd64"
+      alias: "ubuntu/18.04/amd64"
       profiles:
         - "default"
     - name: "d7"
