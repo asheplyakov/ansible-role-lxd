@@ -20,7 +20,7 @@
     name: "{{ item.name }}"
     ansible_connection: lxd
   with_items: "{{ lxd_containers }}"
-  changed_when: false
+  changed_when: None
   loop_control:
     label: "{{ item.name }}"
 
