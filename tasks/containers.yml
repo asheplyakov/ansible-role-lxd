@@ -19,9 +19,8 @@
   add_host:
     name: "{{ item.name }}"
     ansible_connection: lxd
-  with_items: "{{ lxd_container }}"
-  when: "'create' in item.actions"
-  changed_when: None
+  with_items: "{{ lxd_containers }}"
+  changed_when: false
   loop_control:
     label: "{{ item.name }}"
 
