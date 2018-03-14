@@ -14,17 +14,16 @@
     wait_for_ipv4_addresses: true
   with_items: "{{ lxd_containers }}"
   when: "lxd_containers is defined"
-  register: add_lxd_container
 
 - name: Ajout des containers créés à l'inventaire dynamique
   add_host:
-    name: "{{ item.item.name }}"
+    name: "{{ item.name }}"
     ansible_connection: lxd
-  with_items: "{{ add_lxd_container.results }}"
+  with_items: "{{ lxd_container }}"
   when: "'create' in item.actions"
   changed_when: None
   loop_control:
-    label: "{{ item.item.name }}"
+    label: "{{ item.name }}"
 
 - name: Installation de python sur les containers
   raw: |
@@ -34,3 +33,5 @@
   with_items: "{{ lxd_containers }}"
   delegate_to: "{{ item.name }}" 
   changed_when: false
+  loop_control:
+    label: "{{ item.name }}"
