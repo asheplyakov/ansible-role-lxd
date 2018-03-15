@@ -28,7 +28,7 @@
   raw: |
     test -e /etc/redhat-release && manager='yum'
     test -e /etc/debian_version && manager='apt-get' && extra='ca-certificates'
-    $manager -y install python $extra"
+    $manager -y install python $extra
   with_items: "{{ lxd_containers }}"
   delegate_to: "{{ item.name }}" 
   changed_when: false
