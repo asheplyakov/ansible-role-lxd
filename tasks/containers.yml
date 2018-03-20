@@ -24,10 +24,11 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: Installation de python sur les containers
+- name: Mise à jour et installation de python sur les containers
   raw: |
     test -e /etc/redhat-release && manager='yum'
     test -e /etc/debian_version && manager='apt-get' && extra='ca-certificates'
+    $manager -y update
     $manager -y install python $extra
   with_items: "{{ lxd_containers }}"
   delegate_to: "{{ item.name }}" 
