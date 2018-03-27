@@ -25,7 +25,7 @@
     label: "{{ item.name }}"
 
 - name: Mise à jour et installation de python sur les containers
-  raw: test -e /usr/bin/python || test -e /etc/debian_version && apt-get -y update && apt-get -y install python ca-certificates
+  raw: [[ -f /etc/debian_version && ! -f /usr/bin/python ]] && apt-get -y update && apt-get -y install python ca-certificates
   with_items: "{{ lxd_containers }}"
   delegate_to: "{{ item.name }}" 
   changed_when: false
