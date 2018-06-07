@@ -1,3 +1,5 @@
 ---
-lxd_apt_release: "xenial-backports"
+lxd_feature_apt_release: "xenial-backports"
 lxd_lts_apt_release: "xenial"
+
+lxd_apt_release: "{{ lxd_feature_apt_release }}"

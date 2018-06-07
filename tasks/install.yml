@@ -1,4 +1,9 @@
 ---
+- name: Vérification de la présence du repo
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ lxd_apt_release }} main restricted universe multiverse"
+    state: present
+
 - name: Installation des packages lxd
   apt:
     name: "{{ item }}"
