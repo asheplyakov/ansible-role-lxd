@@ -4,10 +4,10 @@
     name: "{{ item.name }}"
     state: started
     source:
-      type: image
-      mode: pull
-      server: https://images.linuxcontainers.org
-      protocol: simplestreams
+      type: "{{ item.type | default('image') }}"
+      mode: "{{ item.mode | default('pull') }}"
+      server: "{{ item.server | default('https://images.linuxcontainers.org') }}"
+      protocol: "{{ item.protocol | default('simplestreams') }}"
       alias: "{{ item.alias }}"
     profiles: "{{ item.profiles | default({}) }}"
     devices: "{{ item.devices | default({}) }}"
