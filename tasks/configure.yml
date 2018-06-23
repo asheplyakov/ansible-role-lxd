@@ -2,6 +2,7 @@
 - name: Get lxd version
   shell: "lxd --version"
   register: lxd_version_result
+  changed_when: false
 
 - name: Configuration for Feature version
   include_tasks: configure-feature.yml
@@ -11,7 +12,7 @@
   include_tasks: configure-lts.yml
   when: "lxd_version_result.stdout | version_compare('2.20', '<=')"
 
-- name: Création des profiles
+- name: Create LXD profiles
   lxd_profile:
     name: "{{ item.name }}"
     state: "present"

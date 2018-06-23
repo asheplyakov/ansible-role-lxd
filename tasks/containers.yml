@@ -1,5 +1,5 @@
 ---
-- name: Création des containers
+- name: Create containers
   lxd_container:
     name: "{{ item.name }}"
     state: started
@@ -15,7 +15,7 @@
   with_items: "{{ lxd_containers }}"
   when: "lxd_containers is defined"
 
-- name: Ajout des containers créés à l'inventaire dynamique
+- name: Add containers to dynamic inventory
   add_host:
     name: "{{ item.name }}"
     ansible_connection: lxd
@@ -24,7 +24,7 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: Mise à jour et installation de python sur les containers
+- name: Installing python and updating containers
   raw: "/bin/bash -c '[[ -f /etc/debian_version && ! -f /usr/bin/python ]] && apt-get -y update && apt-get -y install python ca-certificates || true'"
   with_items: "{{ lxd_containers }}"
   delegate_to: "{{ item.name }}" 
