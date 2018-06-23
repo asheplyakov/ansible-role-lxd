@@ -1,0 +1,17 @@
+---
+- name: Création du storage default
+  shell: "lxc storage create default dir source=/var/lib/lxd/storage-pools/default"
+  register: default_storage_add
+  changed_when: "default_storage_add.rc == 0"
+  failed_when:
+    - "default_storage_add.rc != 0"
+    - "'already exists' not in default_storage_add.stderr"
+
+- name: Création des networks
+  lxd_network:
+    name: "{{ item.name }}"
+    state: "present"
+    config: "{{ item.config }}"
+    description: "{{ item.description }}"
+  with_items: "{{ lxd_networks }}"
+  when: "lxd_networks is defined"

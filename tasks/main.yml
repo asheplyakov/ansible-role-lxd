@@ -1,22 +1,21 @@
 ---
-- name: Inclusion des variables OS specific
-  include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
-  tags: always
+- block:
+    - name: Inclusion des variables OS specific
+      include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+      tags:
+        - lxd_install
+        - lxd_config
+        - lxd_deploy
 
-- name: Ajout des variables pour une install LTS
-  set_fact:
-    lxd_apt_release: "{{ lxd_lts_apt_release }}"
-  when: "lxd_use_lts"
-  tags: always
+    - name: Installation de LXD
+      include_tasks: "install.yml"
+      tags: lxd_install
 
-- name: Installation de LXD
-  import_tasks: "install.yml"
-  tags: lxd_install
+    - name: Configuration de LXD
+      include_tasks: "configure.yml"
+      tags: lxd_config
 
-- name: Configuration de LXD
-  import_tasks: "configuration.yml"
-  tags: lxd_config
-
-- name: Déploiement des containers LXD
-  import_tasks: "containers.yml"
-  tags: lxd_deploy
+    - name: Déploiement des containers LXD
+      include_tasks: "containers.yml"
+      tags: lxd_deploy
+  tags: lxd

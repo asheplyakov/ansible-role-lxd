@@ -1,5 +1,7 @@
 ---
-lxd_feature_apt_release: "xenial-backports"
-lxd_lts_apt_release: "xenial"
+lxd_apt_release: "xenial-backports"
+__lxd_root_device:
+  path: "/"
+  pool: "default"
+  type: "disk"
 
-lxd_apt_release: "{{ lxd_feature_apt_release }}"

@@ -1,0 +1,17 @@
+---
+- name: Execution de lxd init pour la LTS
+  command: "lxd init --auto"
+  register: lxd_init_result
+  changed_when: "lxd_init_result.rc == 0"
+  failed_when:
+    - "lxd_init_result.rc != 0"
+    - "'lxd init requires an empty LXD.' not in lxd_init_result.stderr"
+
+- name: Copie de la configuration réseau pour la LTS
+  template:
+    src: lxd-bridge.j2
+    dest: /etc/default/lxd-bridge
+  notify: restart lxd
+
+- name: Flush des handlers
+  meta: flush_handlers
