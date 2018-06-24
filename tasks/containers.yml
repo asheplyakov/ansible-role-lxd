@@ -31,8 +31,7 @@
         then
             apt-get -y update
             apt-get -y install python 
-            apt-get -y ca-certificates gnupg-curl
-            apt-get -y ca-certificates gnupg1-curl
+            apt-get -y ca-certificates gnupg-curl || apt-get -y ca-certificates gnupg1-curl
         elif [[ -f /etc/redhat-release && ! -f /usr/bin/python ]]
         then
             yum -y install python
