@@ -24,8 +24,17 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: Installing python and updating containers
-  raw: "/bin/bash -c '[[ -f /etc/debian_version && ! -f /usr/bin/python ]] && apt-get -y update && apt-get -y install python ca-certificates gnupg-curl || true'"
+- name: Installing python if absent
+  raw: |
+    if [[ -f /etc/debian_version && ! -f /usr/bin/python ]]
+    then
+        apt-get -y update
+        apt-get -y install python 
+        apt-get -y ca-certificates gnupg-curl
+        apt-get -y ca-certificates gnupg1-curl
+    if [[ -f /etc/redhat-release && ! -f /usr/bin/python ]]
+        yum -y install python
+    fi
   with_items: "{{ lxd_containers }}"
   delegate_to: "{{ item.name }}" 
   changed_when: false
