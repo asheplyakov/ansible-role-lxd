@@ -35,9 +35,14 @@
         elif [[ -f /etc/redhat-release && ! -f /usr/bin/python ]]
         then
             yum -y install python
+        else
+            echo "OK"
         fi
+      args:
+        executable: /bin/bash
       with_items: "{{ lxd_containers }}"
       delegate_to: "{{ item.name }}" 
-      changed_when: false
+      register: python_install
+      changed_when: "'OK' not in python_install.stdout"
       become: false
   tags: lxd_deploy
