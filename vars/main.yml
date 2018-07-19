@@ -1,5 +1,0 @@
----
-# vars file for lxd
-lxd_apt_packages:
-  - lxd
-  - lxd-client

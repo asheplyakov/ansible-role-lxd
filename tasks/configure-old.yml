@@ -1,0 +1,20 @@
+---
+- name: Execute lxd init
+  command: "{{ lxd_bin_folder }}/lxd init --auto"
+  register: lxd_init_result
+  changed_when: false
+  failed_when:
+    - "lxd_init_result.rc != 0"
+    - "'lxd init requires an empty LXD.' not in lxd_init_result.stderr"
+
+- name: Copy lxd-bridge network configuration
+  template:
+    src: lxd-bridge.j2
+    dest: /var/snap/lxd/common/lxd-bridge/config
+  notify:
+    - restart lxd
+    - wait for socket
+
+- name: Flush handlers for lxd-bridge settings
+  meta: flush_handlers
+...

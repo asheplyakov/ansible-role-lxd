@@ -1,11 +1,13 @@
 ---
 lxd_profiles:
-  - name: "default"
-    description: "Default LXD profile"
+  - name: "privileged"
+    description: "LXD profile for privileged containers"
     config:
       security.privileged: "true"
       environment.http_proxy: ""
       user.network_mode: ""
+  - name: "default"
+    description: "Default LXD profile"
     devices:
       eth0:
         nictype: "bridged"
@@ -23,3 +25,4 @@ lxd_networks:
       ipv4.address: "1.1.1.1/24"
       ipv4.nat: "true"
       ipv6.address: "none"
+...

@@ -1,6 +1,0 @@
----
-lxd_apt_release: "trusty-backports"
-__lxd_root_device:
-  path: "/"
-  type: "disk"
-

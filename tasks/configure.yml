@@ -1,25 +1,25 @@
 ---
-- block:
-    - name: Get lxd version
-      shell: "lxd --version"
-      register: lxd_version_result
-      changed_when: false
+- name: Get lxd version
+  shell: "{{ lxd_bin_folder }}/lxd --version"
+  register: lxd_version_result
+  changed_when: false
 
-    - name: Configuration for Feature version
-      include_tasks: configure-feature.yml
-      when: "lxd_version_result.stdout | version_compare('2.20', '>=')"
+- name: Configuration for version 2.20 or above
+  include_tasks: configure-latest.yml
+  when: "lxd_version_result.stdout is version_compare('2.20', '>=')"
 
-    - name: Configuration for LTS version
-      include_tasks: configure-lts.yml
-      when: "lxd_version_result.stdout | version_compare('2.20', '<=')"
+- name: Configuration for version before 2.20
+  include_tasks: configure-old.yml
+  when: "lxd_version_result.stdout is version_compare('2.20', '<=')"
 
-    - name: Create LXD profiles
-      lxd_profile:
-        name: "{{ item.name }}"
-        state: "present"
-        config: "{{ item.config }}"
-        devices: "{{ item.devices }}"
-        description: "{{ item.description }}"
-      with_items: "{{ lxd_profiles }}"
-      when: "lxd_profiles is defined"
-  tags: lxd_config
+- name: Create LXD profiles
+  lxd_profile:
+    name: "{{ item.name }}"
+    state: "present"
+    config: "{{ item.config | default({}) }}"
+    devices: "{{ item.devices | default({}) }}"
+    description: "{{ item.description }}"
+    url: "{{ lxd_url }}"
+  with_items: "{{ lxd_profiles }}"
+  when: "lxd_profiles is defined"
+...

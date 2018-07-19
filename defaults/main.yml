@@ -1,5 +1,17 @@
 ---
-# Feature defaults
+# Defining paths for socket and binaries
+lxd_socket_path: /var/snap/lxd/common/lxd/unix.socket
+lxd_url: "unix:{{ lxd_socket_path }}"
+lxd_bin_folder: "/snap/bin"
+lxd_service_name: snap.lxd.daemon
+
+# This sets stable as default lxd_snap_channel
+# It also enable the use of subvars version and branch for no apparent reason other than I wanted to try it :)
+lxd_snap_channel_version: 
+lxd_snap_channel_branch: stable
+lxd_snap_channel: "{{ [lxd_snap_channel_version, lxd_snap_channel_branch] | reject('none') | join('/') }}"
+
+# Defining a default network lxdbr0
 lxd_networks:
   - name: lxdbr0
     description: "Default lxd network"
@@ -8,13 +20,31 @@ lxd_networks:
       ipv4.nat: "true"
       ipv6.address: "none"
 
-# LTS defaults
+# Same as above but using lxd-bridge for version before 2.20
 lxd_bridge:
   ipv4:
     address: "192.168.56.1/24"
     nat: "true"
 
-# Common defaults
+# For the default profile we need to have two versions since disk device
+# have a new key pool in version 2.20 and above
+__lxd_root_device_old:
+  path: /
+  type: disk
+__lxd_root_device_new:
+  path: /
+  pool: default
+  type: disk
+__lxd_root_device: |
+                "{% if '2.0' in lxd_snap_channel %}
+                {{ __lxd_root_device_old }}
+                {% else %}
+                {{ __lxd_root_device_new }}
+                {% endif %}"
+
+lxd_default_root_device: "{{ __lxd_root_device | from_yaml }}"
+
+# Defining a default profile
 lxd_profiles:
   - name: "default"
     description: "Default lxd profile"
@@ -26,5 +56,5 @@ lxd_profiles:
         nictype: "bridged"
         parent: "lxdbr0"
         type: "nic"
-      root: "{{ __lxd_root_device }}"
-
+      root: "{{ lxd_default_root_device }}"
+...

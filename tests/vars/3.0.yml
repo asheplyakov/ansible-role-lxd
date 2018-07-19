@@ -1,0 +1,42 @@
+---
+lxd_profiles:
+  - name: "privileged"
+    description: "LXD profile for privileged containers"
+    config:
+      security.privileged: "true"
+      environment.http_proxy: ""
+      user.network_mode: ""
+# Bug with 3.0.1 doesn't work without device
+    devices:
+      eth0:
+        nictype: "bridged"
+        parent: "lxdbr0"
+        type: "nic"
+      root:
+        path: "/"
+        pool: "default"
+        type: "disk"
+
+  - name: "default"
+    description: "Default LXD profile"
+# Same as above
+    config:
+      environment.http_proxy: ""
+    devices:
+      eth0:
+        nictype: "bridged"
+        parent: "lxdbr0"
+        type: "nic"
+      root:
+        path: "/"
+        pool: "default"
+        type: "disk"
+
+lxd_bridge:
+  ipv4:
+    address: "1.1.1.1/24"
+    nat: "true"
+  ipv6:
+    address: "fd26:9b5f:cdb1:7756::1/64"
+    nat: "true"
+...

@@ -1,6 +1,8 @@
+---
 - hosts: localhost
   tasks:
     - name: Install netaddr python module
       apt:
         name: python-netaddr
         state: latest
+...

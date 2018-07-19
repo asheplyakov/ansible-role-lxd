@@ -6,10 +6,21 @@ python: "2.7"
 sudo: true
 
 env:
-  - distribution: ubuntu
-    distribution_version: 16
-  - distribution: ubuntu
-    distribution_version: 14
+  global:
+    - distribution: ubuntu
+  matrix:
+    - distribution_version: 18
+      lxd_snap_channel: stable
+    - distribution_version: 18
+      lxd_snap_channel: 3.0/stable
+    - distribution_version: 18
+      lxd_snap_channel: 2.0/stable
+    - distribution_version: 16
+      lxd_snap_channel: stable
+    - distribution_version: 16
+      lxd_snap_channel: 3.0/stable
+    - distribution_version: 16
+      lxd_snap_channel: 2.0/stable
 
 before_install:
   - sudo apt-get -qq update
@@ -37,3 +48,4 @@ script:
 #   - sudo -E su travis -c "lxc exec c1 -- lxc list"
 #   - echo '### show lxd-bridge config file'
 #   - sudo -E su travis -c "lxc exec c1 -- cat /etc/default/lxd-bridge
+...

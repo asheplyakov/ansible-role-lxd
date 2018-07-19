@@ -1,15 +1,26 @@
 ---
-- block:
-    - name: Vérification de la présence du repo
-      apt_repository:
-        repo: "deb http://archive.ubuntu.com/ubuntu {{ lxd_apt_release }} main restricted universe multiverse"
-        state: present
+- name: Remove lxd package install
+  apt:
+    name:
+      - lxd
+      - lxd-client
+    state: absent
+    update_cache: yes
 
-    - name: Installation des packages lxd
-      apt:
-        name: "{{ item }}"
-        state: latest
-        default_release: "{{ lxd_apt_release }}"
-        update_cache: yes
-      with_items: "{{ lxd_apt_packages }}"
-  tags: lxd_install
+- name: Make sure snapd is installed
+  apt:
+    name: snapd
+    state: latest
+    update_cache: yes
+
+- name: Install lxd via snap
+  shell: "snap install lxd --channel={{ lxd_snap_channel }}"
+  register: lxd_snap_install
+  changed_when: "'is already installed' not in lxd_snap_install.stderr"
+  notify:
+    - start lxd
+    - wait for socket
+
+- name: Flush handlers to make sure lxd is started
+  meta: flush_handlers
+...

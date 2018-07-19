@@ -1,7 +1,0 @@
----
-lxd_apt_release: "xenial-backports"
-__lxd_root_device:
-  path: "/"
-  pool: "default"
-  type: "disk"
-
