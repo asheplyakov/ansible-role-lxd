@@ -2,7 +2,7 @@
 - name: Create containers
   lxd_container:
     name: "{{ item.name }}"
-    state: started
+    state: "{{ item.state | default('started') }}"
     source:
       type: "{{ item.type | default('image') }}"
       mode: "{{ item.mode | default('pull') }}"

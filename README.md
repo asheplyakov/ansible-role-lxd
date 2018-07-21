@@ -118,6 +118,7 @@ There is no default value for this var.
 ```YAML
 lxd_containers:
   - name: container-full-options
+    state: started                             # default
     type: image                                # default
     mode: pull                                 # default
     server: https://images.linuxcontainers.org # default
