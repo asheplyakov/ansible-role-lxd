@@ -6,12 +6,13 @@
       - lxd-client
     state: absent
     update_cache: yes
+    force_apt_get: yes
 
 - name: Make sure snapd is installed
   apt:
     name: snapd
     state: latest
-    update_cache: yes
+    force_apt_get: yes
 
 - name: Install lxd via snap
   shell: "snap install lxd --channel={{ lxd_snap_channel }}"
