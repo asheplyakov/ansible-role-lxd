@@ -25,11 +25,6 @@ lxd_containers:
       profiles:
         - "default"
         - "privileged"
-    - name: "d7"
-      alias: "debian/7/amd64"
-      profiles:
-        - "default"
-        - "privileged"
     - name: "d8"
       alias: "debian/8/amd64"
       profiles:
