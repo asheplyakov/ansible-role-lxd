@@ -8,8 +8,7 @@
     match: tcp
     destination_port: "{{ item.dest_port }}"
     jump: DNAT
-    to_destination: "{{ item.container_ip }}"
-    to_ports: "{{ item.container_port | default(item.dest_port) }}"
+    to_destination: "{{ item.container_ip }}:{{ item.container_port | default(item.dest_port) }}"
     comment: "Redirect traffic on port {{ item.dest_port }} to {{ item.container_ip }} on port {{ item.container_port | default(item.dest_port) }}"
   with_items: "{{ lxd_port_forwarding }}"
   when: "lxd_port_forwarding is defined"

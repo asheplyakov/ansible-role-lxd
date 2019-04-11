@@ -7,9 +7,9 @@ This role aims to manage [LXD](https://linuxcontainers.org/lxd/), a daemon wrapp
 
 Using it you can **installs** and **configure** LXD. You can also **deploys** containers with a python post install to enable ansible.
 
-This role use snap for installing LXD, **it will remove** any **package manager installation** of LXD in order for the LXD connection plugin to works. 
+This role use snap for installing LXD, **it will remove** any **package manager installation** of LXD in order for the LXD connection plugin to works.
 
-As of now there is 3 snap channels for installing LXD : 
+As of now there is 3 snap channels for installing LXD :
 
 snap channel | LXD version |
 ------------ | ----------- |
