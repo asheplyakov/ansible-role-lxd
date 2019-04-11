@@ -11,5 +11,9 @@
     - name: Deploy LXD containers
       import_tasks: "containers.yml"
       tags: lxd_deploy
+
+    - name: Setup NAT routing
+      import_tasks: "nat.yml"
+      tags: lxd_nat
   tags: lxd
 ...

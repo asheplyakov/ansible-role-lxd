@@ -137,6 +137,21 @@ lxd_containers:
     alias: centos/7/amd64
 ```
 
+###### lxd_port_forwarding
+
+A list of NAT rules that we want to setup in order to expose some containers.
+
+There is no default value for this var.
+
+```YAML
+lxd_port_forwarding:
+  - dest_port: 80
+    container_ip: 192.168.2.1
+    container_port: 8080       # If container_port is not set, dest_port value is used
+  - dest_port: 443
+    container_ip: 192.168.2.2
+```
+
 Tags
 ----
 
