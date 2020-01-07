@@ -27,12 +27,12 @@
 
 - name: Installing python if absent
   raw: |
-    if [[ -f /etc/debian_version && ! -f /usr/bin/python ]]
+    if [[ -f /etc/debian_version && ! -f /usr/bin/python3 ]]
     then
         apt-get -y update
         apt-get -y install python3
         apt-get -y install systemd ca-certificates gnupg-curl || apt-get -y install systemd ca-certificates gnupg1-curl
-    elif [[ -f /etc/redhat-release && ! -f /usr/bin/python ]]
+    elif [[ -f /etc/redhat-release && ! -f /usr/bin/python3 ]]
     then
         yum -y install python3
     else
@@ -41,7 +41,7 @@
   args:
     executable: /bin/bash
   with_items: "{{ lxd_containers }}"
-  delegate_to: "{{ item.name }}" 
+  delegate_to: "{{ item.name }}"
   register: python_install
   changed_when: "'OK' not in python_install.stdout"
   become: false
