@@ -4,8 +4,8 @@
     table: nat
     chain: PREROUTING
     in_interface: eth0
-    protocol: tcp
-    match: tcp
+    protocol: "{{ item.protocol | default('tcp') }}"
+    match: "{{ item.match | default(item.protocol) | default('tcp') }}"
     destination_port: "{{ item.dest_port }}"
     jump: DNAT
     to_destination: "{{ item.container_ip }}:{{ item.container_port | default(item.dest_port) }}"
