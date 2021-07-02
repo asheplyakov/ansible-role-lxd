@@ -16,6 +16,13 @@
   with_items: "{{ lxd_containers }}"
   when: "lxd_containers is defined"
 
+
+# XXX: cloud-init is missing in some images (in particular ALT Linux)
+# so it's impossible to configure remote access with user.user-data
+
+- include_tasks: containers_remote_access.yml
+  with_items: "{{ lxd_containers|default([]) }}"
+
 - include_tasks: dynamic_inventory.yml
   with_items: "{{ ansible_play_hosts }}"
   loop_control:

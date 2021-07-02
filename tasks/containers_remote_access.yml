@@ -1,0 +1,25 @@
+---
+
+# Inject ssh public key into /root/.ssh
+# Enable LLMNR so the container can be easily accessed via the network
+
+- name: create /root/.ssh in container
+  command: >
+    lxc shell {{ item.name }} -- /bin/sh -c "mkdir -p -m700 /root/.ssh"
+
+# TODO: extract ssh keys from profile(s)
+- name: enable root login into container by ssh public key
+  command: >
+    lxc shell {{ item.name }} -- /bin/sh -c 'echo "{{ maintainer.ssh_public_key }}" >> /root/.ssh/authorized_keys'
+
+- name: enable and start sshd in container
+  command: >
+    lxc shell {{ item.name }} -- /bin/sh -c 'systemctl enable --now sshd'
+
+- name: enable LLMNR for systemd-resolved
+  command: >
+    lxc shell {{ item.name }} -- /bin/sh -c 'sed -re "s/^#LLMNR=no/LLMNR=yes/" -i /etc/systemd/resolved.conf'
+
+- name: restart systemd-resolved in container
+  command: >
+    lxc shell {{ item.name }} -- /bin/sh -c 'systemctl restart systemd-resolved'
