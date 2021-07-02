@@ -16,33 +16,7 @@
   with_items: "{{ lxd_containers }}"
   when: "lxd_containers is defined"
 
-- name: Add containers to dynamic inventory
-  add_host:
-    name: "{{ item.name }}"
-    ansible_connection: lxd
-  with_items: "{{ lxd_containers }}"
-  changed_when: false
+- include_tasks: dynamic_inventory.yml
+  with_items: "{{ ansible_play_hosts }}"
   loop_control:
-    label: "{{ item.name }}"
-
-- name: Installing python if absent
-  raw: |
-    if [[ -f /etc/debian_version && ! -f /usr/bin/python3 ]]
-    then
-        apt-get -y update
-        apt-get -y install python3
-        apt-get -y install systemd ca-certificates gnupg-curl || apt-get -y install systemd ca-certificates gnupg1-curl
-    elif [[ -f /etc/redhat-release && ! -f /usr/bin/python3 ]]
-    then
-        yum -y install python3
-    else
-        echo "OK"
-    fi
-  args:
-    executable: /bin/bash
-  with_items: "{{ lxd_containers }}"
-  delegate_to: "{{ item.name }}"
-  register: python_install
-  changed_when: "'OK' not in python_install.stdout"
-  become: false
-...
+    loop_var: thehost
