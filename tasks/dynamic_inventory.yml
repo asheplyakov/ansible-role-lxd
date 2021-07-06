@@ -5,9 +5,7 @@
     name: "{{ item.name }}"
     ansible_user: root
     ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
-    groups: 
-      - lxd_containers
-      - distccd
+    groups: "{{ item.ansible_groups|default([]) + ['lxd_containers'] }}"
   delegate_to: localhost
   with_items: "{{ hostvars[thehost].lxd_containers }}"
   loop_control:
